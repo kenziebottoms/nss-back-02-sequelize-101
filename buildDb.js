@@ -3,6 +3,7 @@
 let models = require("./models");
 let { directors } = require("./seeders/data/directors");
 let { shows } = require("./seeders/data/shows");
+let { users } = require("./seeders/data/users");
 
 models.sequelize.sync({ force: true })
   .then(() => {
@@ -10,6 +11,9 @@ models.sequelize.sync({ force: true })
   })
   .then(() => {
     return models.Show.bulkCreate(shows);
+  })
+  .then(() => {
+    return models.User.bulkCreate(users);
   })
   .then((data) => {
     process.exit();
