@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/shows", (req, res, next) => {
-  Show.findAll({ include: [{ model: Director, attributes: ["name"]}] })
+  Show.findAll({ include: [{ model: Director, attributes: ["name"] }] })
     .then(shows => {
       res.status(200).json(shows);
     })
@@ -21,10 +21,22 @@ app.get("/shows", (req, res, next) => {
 app.get("/shows/:id", (req, res, next) => {
   Show.findOne({
     raw: true,
-    where: {id: req.params.id}
+    where: { id: req.params.id }
   })
     .then(show => {
       res.status(200).json(show);
+    })
+    .catch(err => next(err));
+});
+
+app.post("/favorites", ({ body: { UserId, ShowId } }, res, next) => {
+  User.findById(UserId)
+    .then(user => {
+      console.log(user);
+      return user.addFavorite(ShowId)
+    })
+    .then(record => {
+      res.status(201).json(record);
     })
     .catch(err => next(err));
 });
