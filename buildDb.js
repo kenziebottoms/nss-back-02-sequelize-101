@@ -2,15 +2,15 @@
 
 let models = require("./models");
 let { directors } = require("./seeders/data/directors");
+let { shows } = require("./seeders/data/shows");
 
 models.sequelize.sync({ force: true })
   .then(() => {
     return models.Director.bulkCreate(directors);
   })
   .then(() => {
-    return models.Director.findAll({ raw: true });
+    return models.Show.bulkCreate(shows);
   })
   .then((data) => {
-    console.log(data);
     process.exit();
   });
