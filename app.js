@@ -10,6 +10,8 @@ const { User, Show, Director } = require('./models');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(express.static(__dirname+'/public', { extensions: 'html'}));
+
 app.use('/shows', require('./routes/shows'));
 app.use('/users', require('./routes/users'));
 app.use('/directors', require('./routes/directors'));
