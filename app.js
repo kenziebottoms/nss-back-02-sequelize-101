@@ -11,25 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/shows', require('./routes/shows'));
+app.use('/users', require('./routes/users'));
 
-app.get('/users/:uid', (req, res, next) => {
-  User.findById(req.params.uid)
-    .then(user => {
-      res.status(200).json(user);
-    })
-    .catch(err => next(err));
-});
-
-app.get('/users/:uid/favorites', (req, res, next) => {
-  User.findById(req.params.uid)
-    .then(user => {
-      return user.getFavorites();
-    })
-    .then(faves => {
-      res.status(200).json(faves);
-    })
-    .catch(err => next(err));
-});
 app.post('/favorites', ({ body: { UserId, ShowId } }, res, next) => {
   User.findById(UserId)
     .then(user => {
