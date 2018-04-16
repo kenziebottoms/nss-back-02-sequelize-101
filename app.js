@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 
 app.use('/shows', require('./routes/shows'));
 app.use('/users', require('./routes/users'));
+app.use('/directors', require('./routes/directors'));
 
 app.post('/favorites', ({ body: { UserId, ShowId } }, res, next) => {
   User.findById(UserId)
