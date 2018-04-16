@@ -4,40 +4,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-app.set('models', require('./models'));
-const { User, Show, Director } = app.get('models');
+const { User, Show, Director } = require('./models');
 
 // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/shows', (req, res, next) => {
-  Show.findAll({ include: [{ model: Director, attributes: ['name'] }] })
-    .then(shows => {
-      res.status(200).json(shows);
-    })
-    .catch(err => next(err));
-});
-app.get('/shows/:id', (req, res, next) => {
-  Show.findOne({
-    raw: true,
-    where: { id: req.params.id }
-  })
-    .then(show => {
-      res.status(200).json(show);
-    })
-    .catch(err => next(err));
-});
-app.patch('/shows/:id', (req, res, next) => {
-  Show.find({where: {id: req.params.id}})
-    .then(obj => {
-      return obj.updateAttributes(req.body);
-    })
-    .then(obj => {
-      res.status(201).json(obj);
-    })
-    .catch(err => next(err));
-});
+app.use('/shows', require('./routes/shows'));
 
 app.get('/users/:uid', (req, res, next) => {
   User.findById(req.params.uid)
