@@ -20,4 +20,15 @@ router.get('/:id', (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get('/:id/shows', (req, res, next) => {
+  Director.findById(req.params.id)
+    .then(director => {
+      return Show.find({where: {directorId: req.params.id}});
+    })
+    .then(shows => {
+      res.status(200).json(shows);
+    })
+    .catch(err => next(err));
+});
+
 module.exports = router;
