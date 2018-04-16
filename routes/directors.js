@@ -31,4 +31,12 @@ router.get('/:id/shows', (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.post('/', (req, res, next) => {
+  Director.create(req.body)
+    .then(director => {
+      res.status(200).json(director);
+    })
+    .catch(err => next(err));
+});
+
 module.exports = router;
