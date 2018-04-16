@@ -35,9 +35,28 @@ app.patch('/shows/:id', (req, res, next) => {
     })
     .then(obj => {
       res.status(201).json(obj);
-    });
+    })
+    .catch(err => next(err));
 });
 
+app.get('/users/:uid', (req, res, next) => {
+  User.findById(req.params.uid)
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/users/:uid/favorites', (req, res, next) => {
+  User.findById(req.params.uid)
+    .then(user => {
+      return user.getFavorites();
+    })
+    .then(faves => {
+      res.status(200).json(faves);
+    })
+    .catch(err => next(err));
+});
 app.post('/favorites', ({ body: { UserId, ShowId } }, res, next) => {
   User.findById(UserId)
     .then(user => {
